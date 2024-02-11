@@ -49,6 +49,7 @@ def predict(text):
     score = (np.dot(np.array(results), np.transpose(np.array([1, 2, 3, 4, 5]))) + np.max(results)*(np.argmax(results)+1)) / (np.sum(results)+np.max(results))
     return score[0]
 
+
 if __name__ == "__main__":
     result = predict("This is the best video I have ever watched. ")
     print(f"Score: {result}")
