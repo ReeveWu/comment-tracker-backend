@@ -21,7 +21,7 @@ def create_model():
     x = tf.keras.layers.Dense(128, activation='relu')(x)
     x = tf.keras.layers.Dropout(0.2)(x)
     x = tf.keras.layers.Dense(32, activation='relu')(x)
-    y = tf.keras.layers.Dense(5, activation='softmax', name='outputs')(x)
+    y = tf.keras.layers.Dense(3, activation='softmax', name='outputs')(x)
 
     model = tf.keras.Model(inputs=[input_ids, mask], outputs=y)
     optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=5e-05, epsilon=1e-08, decay=0.01, clipnorm=1.0)
@@ -33,7 +33,7 @@ def create_model():
     return model
 
 model = create_model()
-model.load_weights("model/v2/v2")
+model.load_weights("model/v3/v3")
 
 def tokenize(text):
     tokens = tokenizer.encode_plus(text=text, max_length=50, 
@@ -46,7 +46,7 @@ def predict(text):
     tokens = tokenize(text)
     results = model.predict(tokens)
 
-    score = (np.dot(np.array(results), np.transpose(np.array([1, 2, 3, 4, 5]))) + np.max(results)*(np.argmax(results)+1)) / (np.sum(results)+np.max(results))
+    score = np.dot(np.array(results), np.transpose(np.array([1, 2, 3])))/ np.sum(results)
     return score[0]
 
 
